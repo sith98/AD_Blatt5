@@ -1,0 +1,205 @@
+\documentclass[a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[paper=a4paper,left=25mm,right=25mm,top=25mm,bottom=25mm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\newcommand{\BigO}{\operatorname{O}}
+\newcommand{\T}{\operatorname{T}}
+\newcommand{\ceil}[1]{\left\lceil{}{#1}\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor{}{#1}\right\rfloor}
+
+\title{AD Übungsblatt 5}
+\author{Simon Thelen}
+
+\begin{document}
+    \maketitle
+
+    \section*{Aufgabe 2}
+    \label{sec:aufgabe2}
+
+    \subsection*{1}
+    \label{subsec:aufgabe2_1}
+    z.z.:\  Ein Heap mit $n$ Elementen hat Höhe $\lfloor\log{n}\rfloor$
+    \begin{proof}
+        Beweis durch Induktion
+
+        \begin{description}
+            \item[IA] $\lfloor\log{1}\rfloor = 0$
+            \item[IV] Ein Heap mit $n$ Elementen hat Höhe $\lfloor\log{n}\rfloor$
+            \item[IS] $n \longmapsto n + 1$
+            \begin{description}
+                \item[Fall 1] $n + 1 = 2^i, i \in \mathbb{N}$
+                \begin{gather*}
+                    \floor{\log{n + 1}} = \floor{\log{2^i}} = \log{2^i} = i = \floor{\log{n}} + 1
+                \end{gather*}
+                Stimmt, da bei einem vollen Heap gilt: $n = 2^i - 1$, was bedeutet, dass ein Baum mit $n + 1$ eins höher ist.
+                \item[Fall 2] $n + 1 = 2^i - k, k \in \mathbb{N}, 1 < k < 2^{i - 1}$
+                \begin{gather*}
+                    n + 1 > 2^i - 2^{i - 1} = 2^{i - 1}
+                    \Rightarrow \log{(n + 1)} > \log{2^{i - 1}} = i - 1
+                    \Rightarrow \floor{\log{(n + 1)}} = \floor{\log{n}}
+                \end{gather*}
+                Stimmt, da der Heap bei $n$ noch nicht voll war. Das heißt die Höhe bleibt bei $n + 1$ gleich.
+            \end{description}
+        \end{description}
+    \end{proof}
+
+    \subsection*{2}
+    \label{subsec:aufgabe2_2}
+    z.z.:\  Ein Heap mit $n$ Elementen hat höchstens $\lceil\frac{n}{2^{h+1}}\rceil$ viele Knoten der Höhe $h$.
+
+    \begin{proof} Beweis durch Induktion
+
+        \begin{description}
+            \item[IA] $n = 1$
+            \begin{gather*}
+                0 < \frac{1}{2^{k + 1}} < 1, \forall k \Rightarrow \ceil{\frac{1}{2^{k + 1}}} = 1
+            \end{gather*}
+            \item[IV] Ein Heap mit $n$ Elementen hat höchstens $\ceil{\frac{n}{2^{h+1}}}$ viele Knoten der Höhe $h$.
+            \item[IS] $n \longmapsto n + 1$
+            \begin{description}
+                \item[IA] $k = 0$
+                \begin{gather*}
+                    \ceil{\frac{n + 1}{2}}
+                \end{gather*}
+                Stimmt, da sich die
+            \end{description}
+        \end{description}
+    \end{proof}
+
+    \subsection*{3}
+    \label{subsec:aufgabe2_3}
+    z.z.:~$\sum_{k=0}^{\infty}{k x^k} = \frac{x}{(1 - x)^2}$
+
+    \begin{proof}
+        \begin{align*}
+            \sum_{k=0}^{\infty}{x^k} &= \frac{1}{1 - x} \\
+            \left( \sum_{k=0}^{\infty}{x^k} \right)' &= \left( \frac{1}{1 - x} \right)' \\
+            \sum_{k=0}^{\infty}{k x^{k-1}} &= \frac{1}{(1 - x)^2} \quad | \cdot x \\
+            \sum_{k=0}^{\infty}{k x^x} &= \frac{x}{(1 - x)^2}
+        \end{align*}
+    \end{proof}
+
+    \subsection*{Vertauschbarkeit von Heapify bei BuildHeap}
+    Die Heapify-Aufrufe können nicht einfach vertauscht werden.
+    Ein Gegenbeispiel wäre das Array $[1, 2, 3, 4]$.
+    Wird hier Heapify wie im BuildHeap zuerst auf das zweite und dann auf das erste Element aufgerufen, ergibt sich der Heap $[4, 2, 3, 1]$.
+    Dreht man die Reihenfolge jedoch um, lautet das Ergebnis $[3, 4, 1, 2]$, was kein korrekter Heap ist.
+
+    \section*{Aufgabe 3}
+    \label{sec:aufgabe3}
+    \subsection*{Variante 1}
+    \label{subsec:variante1}
+    \begin{proof}
+        Beweis durch Induktion
+
+        \begin{description}
+            \item[IA] für $n = 2$: $M \cdot N = O$ per Definition (normale Matrixmultipliktion für $\mathbb{R}^{2 \times 2}$)
+            \item[IV] Berechnung der Multiplikation ist korrekt für $n$
+            \item[IS] $n \longmapsto 2n$
+
+            \setlength{\jot}{10pt}
+            \begin{gather*}
+                \begin{pmatrix}
+                    M_{11} & M_{12} \\
+                    M_{21} & M_{22} \\
+                \end{pmatrix} \cdot
+                \begin{pmatrix}
+                    N_{11} & N_{12} \\
+                    N_{21} & N_{22} \\
+                \end{pmatrix} = \\
+                \begin{pmatrix}
+                    \begin{pmatrix}
+                        M_{11,11} & M_{11,12} \\
+                        M_{11,21} & M_{11,22}
+                    \end{pmatrix} & \dots \\
+                    \vdots & \ddots
+                \end{pmatrix} \cdot
+                \begin{pmatrix}
+                    \begin{pmatrix}
+                        N_{11,11} & N_{11,12} \\
+                        N_{11,21} & N_{11,22}
+                    \end{pmatrix} & \dots \\
+                    \vdots & \ddots
+                \end{pmatrix} = \\
+                \begin{pmatrix}
+                    \begin{pmatrix}
+                        M_{11,11} & M_{11,12} \\
+                        M_{11,21} & M_{11,22}
+                    \end{pmatrix} \cdot
+                    \begin{pmatrix}
+                        N_{11,11} & N_{11,12} \\
+                        N_{11,21} & N_{11,22}
+                    \end{pmatrix} +
+                    \begin{pmatrix}
+                        M_{12,11} & M_{12,12} \\
+                        M_{12,21} & M_{12,22}
+                    \end{pmatrix} \cdot
+                    \begin{pmatrix}
+                        N_{21,11} & N_{21,12} \\
+                        N_{21,21} & N_{21,22}
+                    \end{pmatrix} & \dots \\
+                    \vdots & \ddots
+                \end{pmatrix} = \\
+                \begin{pmatrix}
+                    \left(\begin{smallmatrix}
+                              M_{11,11} \cdot N_{11,11} + M_{11,12} \cdot N_{11,21} + M_{12,11} \cdot N_{21,11} + M_{12,12} \cdot N_{21,21} &
+                              M_{11,11} \cdot N_{11,12} + M_{11,12} \cdot N_{11,22} + M_{12,11} \cdot N_{21,12} + M_{12,12} \cdot N_{21,22} \\
+                              M_{11,21} \cdot N_{11,11} + M_{11,22} \cdot N_{11,21} + M_{12,21} \cdot N_{21,11} + M_{12,22} \cdot N_{21,21} &
+                              M_{11,21} \cdot N_{11,12} + M_{11,22} \cdot N_{11,22} + M_{12,21} \cdot N_{21,12} + M_{12,22} \cdot N_{21,22}
+                    \end{smallmatrix}\right) & \dots \\
+                    \vdots & \ddots
+                \end{pmatrix} = \\
+                = \begin{pmatrix}
+                      O_{11,11} & O_{11,12} & \dots \\
+                      O_{11,21} & O_{11,22} & \dots \\
+                      \vdots & \vdots & \ddots
+                \end{pmatrix}
+            \end{gather*}
+            Das gleiche gilt analog auch für $O_{12}$, $O_{21}$ und $O_{22}$.
+        \end{description}
+    \end{proof}
+
+    \subsubsection*{Laufzeitverhalten}
+    \begin{align*}
+        \T(n) =
+        \begin{cases}
+            1 & n = 2 \\
+            8\T(n / 2) + \Theta(n^2) & n > 2
+        \end{cases}
+    \end{align*}
+    Da $f(n) = \Theta(n^2) = \BigO(n^{\log_2(8)})$, gilt nach Fall 1 der Mastermethode $\T(n) = \Theta(n^{\log_2(8)}) = \Theta(n^3)$, was keine Verbesserung zur {\glqq}Standardmethode{\grqq} darstellt.
+
+    \subsection*{Variante 2}
+    \label{subsec:variante2}
+    \begin{proof}
+        Es gilt
+        \begin{multline*}
+            O_{11} = (M_{11}+M_{22})\cdot(N_{11}+N_{22}) + M_{22}\cdot(N_{21}-N_{11}) \\
+            - (M_{11} + M_{12}) \cdot N_{22} + (M_{12}-M_{22})\cdot(N_{21}+N_{22}) \\
+            = M_{11}\cdot N_{11} + M_{11}\cdot N_{22} + M_{22}\cdot N_{11} + M_{22}\cdot N_{22} + M_{22}\cdot N_{21} - M_{22}\cdot N_{11} \\
+            - M_{11}\cdot N_{22} - M_{12}\cdot N_{22} + M_{12}\cdot N_{21} + M_{12}\cdot N_{22} - M_{22}\cdot N_{21} - M_{22}\cdot N_{22} \\
+            = M_{11} \cdot N_{11} + M_{12} \cdot N_{21}
+            \text{,}
+        \end{multline*}
+        was dem gleichen Wert für $O_{11}$ wie bei Variante~1 entspricht. Analog gilt das gleiche für $O_{12}$, $O_{21}$ und $O_{22}$.
+        Unter der Annahme, dass Variante~1 korrekt ist, muss damit auch Variante~2 korrekt sein.
+    \end{proof}
+
+    \subsubsection*{Laufzeitverhalten}
+    \begin{align*}
+        \T(n) =
+        \begin{cases}
+            1 & n = 2 \\
+            7\T(n / 2) + \Theta(n^2) & n > 2
+        \end{cases}
+    \end{align*}
+    Da $f(n) = \Theta(n^2) = \BigO(n^{\log_{2}{7}})$, gilt nach dem 1. Fall der Mastermethode $\T(n) = \Theta(n^{\log_2{7}}) \approx \Theta(n^{2{,}81})$, was asymtotisch gesehen eine Verbesserung der Laufzeit ist.
+
+
+\end{document}
