@@ -10,6 +10,7 @@
 
 \newcommand{\BigO}{\operatorname{O}}
 \newcommand{\T}{\operatorname{T}}
+\newcommand{\N}{\operatorname{N}}
 \newcommand{\ceil}[1]{\left\lceil{}{#1}\right\rceil}
 \newcommand{\floor}[1]{\left\lfloor{}{#1}\right\rfloor}
 
@@ -38,13 +39,15 @@
                     \floor{\log{n + 1}} = \floor{\log{2^i}} = \log{2^i} = i = \floor{\log{n}} + 1
                 \end{gather*}
                 Stimmt, da bei einem vollen Heap gilt: $n = 2^i - 1$, was bedeutet, dass ein Baum mit $n + 1$ eins höher ist.
-                \item[Fall 2] $n + 1 = 2^i - k, k \in \mathbb{N}, 1 < k < 2^{i - 1}$
-                \begin{gather*}
-                    n + 1 > 2^i - 2^{i - 1} = 2^{i - 1}
-                    \Rightarrow \log{(n + 1)} > \log{2^{i - 1}} = i - 1
-                    \Rightarrow \floor{\log{(n + 1)}} = \floor{\log{n}}
-                \end{gather*}
-                Stimmt, da der Heap bei $n$ noch nicht voll war. Das heißt die Höhe bleibt bei $n + 1$ gleich.
+                \item[Fall 2] $n + 1 = 2^i - k, k \in \mathbb{N}, 1 \leq k < 2^{i - 1}$
+                \begin{align*}
+                    &n + 1 \leq 2^i - 1 &&\Rightarrow \floor{\log{(n + 1)}} \leq i - 1 \\
+                    &n + 1 > 2^i - 2^{i - 1} = 2^{i - 1} &&\Rightarrow \floor{\log{(n + 1)}} \geq i - 1 \\
+                    &n \leq 2^i - 2 &&\Rightarrow \floor{\log{n}} \leq i - 1 \\
+                    &n > 2^i - 2^{i - 1} - 1 = 2^{i - 1} - 1 \Rightarrow n \geq 2^{i - 1} &&\Rightarrow \floor{\log{n}} \geq i - 1 \\
+                    &\quad\Rightarrow \floor{\log{(n + 1)}} = \floor{\log{n}} = i - 1
+                \end{align*}
+                Stimmt, da der Heap bei $n$ noch nicht voll war. Das heißt, die Höhe bleibt bei $n + 1$ gleich.
             \end{description}
         \end{description}
     \end{proof}
@@ -53,23 +56,28 @@
     \label{subsec:aufgabe2_2}
     z.z.:\  Ein Heap mit $n$ Elementen hat höchstens $\lceil\frac{n}{2^{h+1}}\rceil$ viele Knoten der Höhe $h$.
 
-    \begin{proof} Beweis durch Induktion
+    \begin{proof}
+        Gegeben sei ein voller Heap mit $n$ Knoten und einer Höhe von $h_0$.
+        Dann gibt es immer 1 Element der Höhe $h_0$, 2 der Höhe $h_0 - 1$, 4 mit $h_0 - 2$, \dots
 
-        \begin{description}
-            \item[IA] $n = 1$
-            \begin{gather*}
-                0 < \frac{1}{2^{k + 1}} < 1, \forall k \Rightarrow \ceil{\frac{1}{2^{k + 1}}} = 1
-            \end{gather*}
-            \item[IV] Ein Heap mit $n$ Elementen hat höchstens $\ceil{\frac{n}{2^{h+1}}}$ viele Knoten der Höhe $h$.
-            \item[IS] $n \longmapsto n + 1$
-            \begin{description}
-                \item[IA] $k = 0$
-                \begin{gather*}
-                    \ceil{\frac{n + 1}{2}}
-                \end{gather*}
-                Stimmt, da sich die
-            \end{description}
-        \end{description}
+        Das bedeutet, $\operatorname{N}(n, h)$, die Anzahl an Knoten mit Höhe $h$ dieses Heaps, beträgt
+        \begin{align*}
+            \N(n, h) &= 2^{h_0 - h} = 2^{\floor{\log{n}} - h} = \frac{2^{\floor{\log{n}}}}{2^h} \\
+            &= \frac{\floor{n}}{2^h} \leq \ceil{\frac{n}{2^h}} \leq \ceil{\frac{n}{2^{h-1}}}
+            \text{.}
+        \end{align*}
+        Für einen nicht vollen Heap mit $n$ Knoten der Höhe $h_0$ gilt:
+        \begin{align*}
+            \N(n, h) &=
+            \begin{cases}
+                \N(n - 1, 0)        & h = 0 \wedge n \text{ ist gerade} \\
+                \N(n - 1, 0) + 1    & h = 0 \wedge n \text{ ist ungerade} \\
+                \N(n - 1, 0) + 1    & h > 0 \wedge n \text{ ist gerade} \\
+                \N(n - 1, 0)        & h > 0 \wedge n \text{ ist ungerade} \\
+            \end{cases}
+        \end{align*}
+        Ein voller Heap kann also nie weniger Knoten einer bestimmten Höhe haben, als ein nicht voller Heap der gleichen Höhe.
+        Da die obige Formel $\ceil{\frac{n}{2^{h-1}}}$ durch das Aufrunden eine Obergrenze darstellt, ist sie allgemein für jeden Heap gültig.
     \end{proof}
 
     \subsection*{3}
@@ -87,7 +95,7 @@
 
     \subsection*{Vertauschbarkeit von Heapify bei BuildHeap}
     Die Heapify-Aufrufe können nicht einfach vertauscht werden.
-    Ein Gegenbeispiel wäre das Array $[1, 2, 3, 4]$.
+    Ein Gegenbeispiel ist das Array $[1, 2, 3, 4]$.
     Wird hier Heapify wie im BuildHeap zuerst auf das zweite und dann auf das erste Element aufgerufen, ergibt sich der Heap $[4, 2, 3, 1]$.
     Dreht man die Reihenfolge jedoch um, lautet das Ergebnis $[3, 4, 1, 2]$, was kein korrekter Heap ist.
 
