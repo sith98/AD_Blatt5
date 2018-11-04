@@ -36,7 +36,7 @@
             \begin{description}
                 \item[Fall 1] $n + 1 = 2^i, i \in \mathbb{N}$
                 \begin{gather*}
-                    \floor{\log{n + 1}} = \floor{\log{2^i}} = \log{2^i} = i = \floor{\log{n}} + 1
+                    \floor{\log{(n + 1)}} = \floor{\log{2^i}} = \log{2^i} = i = \floor{\log{n}} + 1
                 \end{gather*}
                 Stimmt, da bei einem vollen Heap gilt: $n = 2^i - 1$, was bedeutet, dass ein Baum mit $n + 1$ eins höher ist.
                 \item[Fall 2] $n + 1 = 2^i - k, k \in \mathbb{N}, 1 \leq k < 2^{i - 1}$
@@ -110,7 +110,7 @@
             \item[IA] für $n = 2$: $M \cdot N = O$ per Definition (normale Matrixmultipliktion für $\mathbb{R}^{2 \times 2}$)
             \item[IV] Berechnung der Multiplikation ist korrekt für $n$
             \item[IS] $n \longmapsto 2n$
-
+            \nopagebreak
             \setlength{\jot}{10pt}
             \begin{gather*}
                 \begin{pmatrix}
@@ -125,14 +125,14 @@
                     \begin{pmatrix}
                         M_{11,11} & M_{11,12} \\
                         M_{11,21} & M_{11,22}
-                    \end{pmatrix} & \dots \\
+                    \end{pmatrix} & \ldots \\
                     \vdots & \ddots
                 \end{pmatrix} \cdot
                 \begin{pmatrix}
                     \begin{pmatrix}
                         N_{11,11} & N_{11,12} \\
                         N_{11,21} & N_{11,22}
-                    \end{pmatrix} & \dots \\
+                    \end{pmatrix} & \ldots \\
                     \vdots & \ddots
                 \end{pmatrix} = \\
                 \begin{pmatrix}
@@ -151,7 +151,7 @@
                     \begin{pmatrix}
                         N_{21,11} & N_{21,12} \\
                         N_{21,21} & N_{21,22}
-                    \end{pmatrix} & \dots \\
+                    \end{pmatrix} & \ldots \\
                     \vdots & \ddots
                 \end{pmatrix} = \\
                 \begin{pmatrix}
@@ -160,15 +160,16 @@
                               M_{11,11} \cdot N_{11,12} + M_{11,12} \cdot N_{11,22} + M_{12,11} \cdot N_{21,12} + M_{12,12} \cdot N_{21,22} \\
                               M_{11,21} \cdot N_{11,11} + M_{11,22} \cdot N_{11,21} + M_{12,21} \cdot N_{21,11} + M_{12,22} \cdot N_{21,21} &
                               M_{11,21} \cdot N_{11,12} + M_{11,22} \cdot N_{11,22} + M_{12,21} \cdot N_{21,12} + M_{12,22} \cdot N_{21,22}
-                    \end{smallmatrix}\right) & \dots \\
+                    \end{smallmatrix}\right) & \ldots \\
                     \vdots & \ddots
                 \end{pmatrix} = \\
                 = \begin{pmatrix}
-                      O_{11,11} & O_{11,12} & \dots \\
-                      O_{11,21} & O_{11,22} & \dots \\
+                      O_{11,11} & O_{11,12} & \ldots \\
+                      O_{11,21} & O_{11,22} & \ldots \\
                       \vdots & \vdots & \ddots
                 \end{pmatrix}
             \end{gather*}
+            \nopagebreak
             Das gleiche gilt analog auch für $O_{12}$, $O_{21}$ und $O_{22}$.
         \end{description}
     \end{proof}
@@ -181,7 +182,7 @@
             8\T(n / 2) + \Theta(n^2) & n > 2
         \end{cases}
     \end{align*}
-    Da $f(n) = \Theta(n^2) = \BigO(n^{\log_2(8)})$, gilt nach Fall 1 der Mastermethode $\T(n) = \Theta(n^{\log_2(8)}) = \Theta(n^3)$, was keine Verbesserung zur {\glqq}Standardmethode{\grqq} darstellt.
+    Da $f(n) = \Theta(n^2) = \BigO(n^{\log_2(8)})$, gilt nach dem 1. Fall der Mastermethode $\T(n) = \Theta(n^{\log_2(8)}) = \Theta(n^3)$, was keine Verbesserung zur {\glqq}Standardmethode{\grqq} darstellt.
 
     \subsection*{Variante 2}
     \label{subsec:variante2}
@@ -195,7 +196,7 @@
             = M_{11} \cdot N_{11} + M_{12} \cdot N_{21}
             \text{,}
         \end{multline*}
-        was dem gleichen Wert für $O_{11}$ wie bei Variante~1 entspricht. Analog gilt das gleiche für $O_{12}$, $O_{21}$ und $O_{22}$.
+        was dem gleichen Wert für $O_{11}$ wie bei Variante~1 entspricht. Durch Nachrechnen lässt sich sich zeigen, dass analog auch bei $O_{12}$, $O_{21}$ und $O_{22}$ die gleichen Ergebnisse wie bei Variante~1 herauskommen.
         Unter der Annahme, dass Variante~1 korrekt ist, muss damit auch Variante~2 korrekt sein.
     \end{proof}
 
