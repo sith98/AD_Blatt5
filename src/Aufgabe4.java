@@ -13,7 +13,7 @@ public class Aufgabe4 {
         for (int i = 1; i < help.length; i++) {
             help[i] += help[i - 1];
         }
-        
+
         int[] a2 = new int[a.length];
         for (int num : a) {
             // n
@@ -21,27 +21,27 @@ public class Aufgabe4 {
             // n
             help[num] -= 1;
         }
-        
+
         return a2;
     }
-    
+
     private static void swap(int[] numbers, int first, int second) {
         int temp = numbers[first];
         numbers[first] = numbers[second];
         numbers[second] = temp;
     }
-    
+
     private static void heapify(int[] numbers, int rootIndex, int endIndex) {
         int leftChildIndex = rootIndex * 2 + 1;
         int rightChildIndex = rootIndex * 2 + 2;
-        
+
         int root = numbers[rootIndex];
-        
+
         if (leftChildIndex > endIndex) {
             // no children
             return;
         }
-        
+
         int leftChild = numbers[leftChildIndex];
         if (rightChildIndex > endIndex) {
             // Only left child exists
@@ -62,12 +62,12 @@ public class Aufgabe4 {
             }
         }
     }
-    
+
     private static void heapSort(int[] numbers) {
         int endIndex = numbers.length - 1;
-        
+
         int firstIndexWithChildren = (endIndex - 1) / 2;
-        
+
         // build heap
         for (int i = firstIndexWithChildren; i >= 0; i--) {
             heapify(numbers, i, endIndex);
@@ -78,14 +78,14 @@ public class Aufgabe4 {
             heapify(numbers, 0, endIndex);
         }
     }
-    
+
     private static void mapSort(int[] a, double c) {
         int newn = (int) ((double) a.length * c);
         int i, j = 0;
         int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
-        
+
         int[] bin = new int[newn];
-        
+
         for (i = 0; i < bin.length; i++) {
             bin[i] = -1;
         }
@@ -98,7 +98,7 @@ public class Aufgabe4 {
             }
         }
         double dist = (double) (max - min) / (double) (bin.length - 1);
-        
+
         for (i = 0; i < a.length; i++) {
             int t = (int) ((double) (a[i] - min) / dist);
             int insert = a[i];
@@ -127,23 +127,23 @@ public class Aufgabe4 {
                         left = true;
                     }
                 }
-                bin[t] = insert;
             }
-            for (i = 0; i < bin.length; i++) {
-                if (bin[i] != -1) {
-                    a[j] = bin[i];
-                    j += 1;
-                }
+            bin[t] = insert;
+        }
+        for (i = 0; i < bin.length; i++) {
+            if (bin[i] != -1) {
+                a[j] = bin[i];
+                j += 1;
             }
         }
     }
-    
+
     private static Random r = new Random();
-    
+
     private static int nextInt() {
         return 1_000 + r.nextInt(10_000 - 1_000 + 1);
     }
-    
+
     private static int[] getRandomArray(int length) {
         int[] a = new int[length];
         for (int i = 0; i < a.length; i++) {
@@ -151,31 +151,41 @@ public class Aufgabe4 {
         }
         return a;
     }
-    
+
     private static long measureMillis(int[] numbers, SortingAlgorithm algo) {
         int[] copy = copyOf(numbers);
         long start = System.currentTimeMillis();
         algo.sort(copy);
-        return System.currentTimeMillis() - start;
+        long end =System.currentTimeMillis();
+        System.out.println(isSorted(copy));
+//        System.out.println(Arrays.toString(copy));
+        return end - start;
     }
-    
+
+    private static boolean isSorted(int[] numbers) {
+        for (int i = 1; i < numbers.length; i++) {
+            if (numbers[i] < numbers[i - 1]) {
+                return  false;
+            }
+        }
+        return true;
+    }
+
     private static int[] copyOf(int[] numbers) {
         return Arrays.copyOf(numbers, numbers.length);
     }
-    
+
     public static void main(String[] args) {
         long heapMillis = 0, countMillis = 0, mapMillis = 0;
-        
-        for (int i = 0; i < 100; i++) {
-            int[] numbers = getRandomArray(10_000);
-            for (int j = 0; j < 10; j++) {
-                heapMillis += measureMillis(numbers, Aufgabe4::heapSort);
-                //noinspection ResultOfMethodCallIgnored
-                countMillis += measureMillis(numbers, n -> countSort(n, 10_001));
-                mapMillis += measureMillis(numbers, n -> mapSort(n, 1.25));
-            }
-        }
-        
+
+
+
+        int[] numbers = getRandomArray(10_000_000);
+        heapMillis += measureMillis(numbers, Aufgabe4::heapSort);
+        //noinspection ResultOfMethodCallIgnored
+        countMillis += measureMillis(numbers, n -> countSort(n, 10_001));
+        mapMillis += measureMillis(numbers, n -> mapSort(n, 1.25));
+
         System.out.println(
             "heap: " + heapMillis +
                 ", count: " + countMillis +
